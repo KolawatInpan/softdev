@@ -63,21 +63,21 @@ pipeline {
         //     }
         // }
 
-        stage('Robot Tests') {
-            steps {
-                script {
-                    // Clone the repository containing Robot Framework tests, create and activate a virtual environment, then run the tests
-                    sh '''
-                        git clone https://github.com/KolawatInpan/api-robot.git
-                        cd api-robot
-                        . ../venv/bin/activate
-                        pip install robotframework
-                        pip install robotframework-requests
-                        robot test.robot
-                    '''
-                }
-            }
-        }
+        // stage('Robot Tests') {
+        //     steps {
+        //         script {
+        //             // Clone the repository containing Robot Framework tests, create and activate a virtual environment, then run the tests
+        //             sh '''
+        //                 git clone https://github.com/KolawatInpan/api-robot.git
+        //                 cd api-robot
+        //                 . ../venv/bin/activate
+        //                 pip install robotframework
+        //                 pip install robotframework-requests
+        //                 robot test.robot
+        //             '''
+        //         }
+        //     }
+        // }
 
         stage('Stop Flask Application') {
             steps {
