@@ -40,7 +40,7 @@ pipeline {
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install -r requirements.txt
-                        python -m unittest unit_test --verbose
+                        python -m unittest unit_test.py --verbose
                         coverage run -m unittest unit_test.py --verbose
                         coverage report -m
                         deactivate
