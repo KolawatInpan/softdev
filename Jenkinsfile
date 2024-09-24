@@ -32,6 +32,21 @@ pipeline {
         //     }
         // }
 
+        stage('Start Flask Application') {
+            steps {
+                script {
+                    // Create and activate a virtual environment, then start the Flask application
+                    sh '''
+                        python3 -m venv venv
+                        . venv/bin/activate
+                        pip install -r requirements.txt
+                        nohup flask run --host=0.0.0.0 --port=5000 &
+                        deactivate
+                    '''
+                }
+            }
+        }
+
         // stage('Unit Tests') {
         //     steps {
         //         script {
