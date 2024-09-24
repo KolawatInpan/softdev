@@ -1,7 +1,6 @@
 import unittest
 from app import app  # Import your Flask app
 
-
 class PlusTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
