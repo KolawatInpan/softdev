@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "ghcr.io/kolawatinpan/softdev"
+        VENV_PATH = "${WORKSPACE}/venv"
     }
 
     stages {
@@ -37,7 +38,8 @@ pipeline {
                 script {
                     // Create and activate a virtual environment, then run unit tests using unittest and coverage
                     sh '''
-                        . ../venv/bin/activate
+                        python3 -m venv ${VENV_PATH}
+                        . ${VENV_PATH}/bin/activate
                         pip install -r requirements.txt
                         coverage run -m unittest unit_test.py --verbose
                         coverage report -m
