@@ -42,7 +42,6 @@ pipeline {
                         pip install -r requirements.txt
                         nohup flask run --host=0.0.0.0 --port=5000 &
                         sleep 10  # Wait for the Flask application to start
-                        deactivate
                     '''
                 }
             }
@@ -55,7 +54,6 @@ pipeline {
         //             sh '''
         //                 python3 -m venv venv
         //                 . venv/bin/activate
-        //                 pip install -r requirements.txt
         //                 pip install coverage
         //                 coverage run -m unittest unit_test.py --verbose
         //                 coverage report -m
@@ -72,12 +70,10 @@ pipeline {
                     sh '''
                         git clone https://github.com/KolawatInpan/api-robot.git
                         cd api-robot
-                        python3 -m venv venv
-                        . venv/bin/activate
+                        . ../venv/bin/activate
                         pip install robotframework
                         pip install robotframework-requests
                         robot test.robot
-                        deactivate
                     '''
                 }
             }
