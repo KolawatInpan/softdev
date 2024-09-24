@@ -16,22 +16,13 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def customImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
+                    // def customImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
+                    sh '''
+                        docker build -t ${DOCKER_IMAGE}:${BUILD_ID} .
+                    '''
                 }
             }
         }
-
-        // stage('Install Dependencies') {
-        //     steps {
-        //         script {
-        //             // Install python3-venv package
-        //             sh '''
-        //                 sudo apt-get update
-        //                 sudo apt-get install -y python3-venv
-        //             '''
-        //         }
-        //     }
-        // }
 
         stage('Unit Tests') {
             steps {
