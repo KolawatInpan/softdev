@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/KolawatInpan/softdev.git'
+                git url: 'https://github.com/KolawatInpan/softdev.git', branch: 'main', credentialsId: 'github-admin'
             }
         }
 
@@ -23,7 +23,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://ghcr.io', 'github_credentials') {
+                    docker.withRegistry('https://ghcr.io', 'github-admin') {
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push('latest')
                     }
