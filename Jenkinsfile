@@ -37,6 +37,7 @@ pipeline {
                 script {
                     // Create and activate a virtual environment, then run unit tests using unittest and coverage
                     sh '''
+                        . ../venv/bin/activate
                         pip install -r requirements.txt
                         coverage run -m unittest unit_test.py --verbose
                         coverage report -m
