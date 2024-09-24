@@ -1,6 +1,6 @@
 services:
   web:
-    image: registry.gitlab.com/diaboliccz/devops:latest
+    image: ghcr.io/KolawatInpan/softdev
     build: .
     ports:
       - "8080:5000"
