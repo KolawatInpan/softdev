@@ -16,10 +16,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // def customImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
                     sh '''
                         docker build -t ${DOCKER_IMAGE}:${BUILD_ID} .
-                        docker run -d -p 5000:5000 ${DOCKER_IMAGE}:${BUILD_ID}
                         docker ps
                     '''
                 }
