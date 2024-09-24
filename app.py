@@ -21,14 +21,5 @@ def plus(num1, num2):
     except ValueError:
         return jsonify({'error_msg': 'inputs must be numbers'})
 
-@app.route('/minus', methods=['GET'])
-def minus():
-    try:
-        num1 = float(data['num1'])
-        num2 = float(data['num2'])
-        return jsonify({'result': num1 - num2})
-    except ValueError:
-        return jsonify({'error_msg': 'inputs must be numbers'})
-
 if __name__ == "__main__":
     app.run()
