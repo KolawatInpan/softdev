@@ -1,6 +1,8 @@
+version: '3'
 services:
-  web:
-    image: ghcr.io/KolawatInpan/softdev
-    build: .
+  app:
+    image: ghcr.io/kolawatinpan/softdev:latest
     ports:
-      - "8080:5000"
+      - "8080:8080"
+    environment:
+      - ENV_VAR=value
