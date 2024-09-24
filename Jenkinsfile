@@ -8,26 +8,26 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/KolawatInpan/softdev.git', branch: 'main', credentialsId: 'github-admin'
+                git url: 'https://github.com/KolawatInpan/softdev.git', branch: 'main', credentialsId: 'github-secret'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
+                    def customImage = docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
                 }
             }
         }
 
         stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry('https://ghcr.io', 'github-secret') {
-                        def customImage = docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
-                        customImage.push()
-                        customImage.push('latest')
-                    }
+                withCredentials([string(credentialsId: 'github-secret', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        echo $GITHUB_TOKEN | docker login ghcr.io -u KolawatInpan --password-stdin
+                        docker push ${DOCKER_IMAGE}:${BUILD_ID}
+                        docker push ${DOCKER_IMAGE}:latest
+                    '''
                 }
             }
         }
