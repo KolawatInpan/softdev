@@ -26,7 +26,6 @@ pipeline {
                     sh '''
                         echo $GITHUB_TOKEN | docker login ghcr.io -u KolawatInpan --password-stdin
                         docker push ${DOCKER_IMAGE}:${BUILD_ID}
-                        docker push ${DOCKER_IMAGE}:latest
                     '''
                 }
             }
