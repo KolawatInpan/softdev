@@ -1,0 +1,6 @@
+services:
+  web:
+    image: registry.gitlab.com/diaboliccz/devops:latest
+    build: .
+    ports:
+      - "8080:5000"
