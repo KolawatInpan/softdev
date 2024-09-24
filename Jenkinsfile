@@ -41,6 +41,7 @@ pipeline {
                         . venv/bin/activate
                         pip install -r requirements.txt
                         nohup flask run --host=0.0.0.0 --port=5000 &
+                        sleep 10  # Wait for the Flask application to start
                         deactivate
                     '''
                 }
@@ -77,6 +78,17 @@ pipeline {
                         pip install robotframework-requests
                         robot test.robot
                         deactivate
+                    '''
+                }
+            }
+        }
+
+        stage('Stop Flask Application') {
+            steps {
+                script {
+                    // Stop the Flask application
+                    sh '''
+                        pkill -f "flask run"
                     '''
                 }
             }
