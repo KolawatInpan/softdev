@@ -1,17 +1,39 @@
 pipeline {
-    agent any
+    agent { label 'vm2'}
 
     environment {
+        APP_NAME = "app"
         DOCKER_IMAGE = "ghcr.io/kolawatinpan/softdev"
+
+        ROBOT_REPO = "https://github.com/KolawatInpan/api-robot.git"
+        ROBOT_BRANCH = "main"
+        ROBOT_FILE = "test.robot"
+
+        MAIN_REPO = "https://github.com/KolawatInpan/softdev.git"
+        MAIN_BRANCH = "main"
+
+        GITHUB_TOKEN = credentials('github-token')
+        GITHUB_SECRET = 'github-secret'
+
         VENV_PATH = "${WORKSPACE}/venv"
-        TARGET_VM_USER = "vm2"
-        TARGET_VM_HOST = "172.17.0.1"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/KolawatInpan/softdev.git', branch: 'main', credentialsId: 'github-secret'
+                git url: "${MAIN_REPO}", branch: "${MAIN_BRANCH}", credentialsId: "${GITHUB_SECRET}"
+            }
+        }
+
+        stage('Delete olds') {
+            steps {
+                script {
+                    sh '''
+                        docker stop \$(docker ps -a -q) || true
+                        docker rm \$(docker ps -a -q) || true
+                        docker rmi -f ${DOCKER_IMAGE}:${BUILD_ID} || true
+                    '''
+                }
             }
         }
 
@@ -19,7 +41,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker build -t ${DOCKER_IMAGE}:${BUILD_ID} .
+                        docker build -t ${DOCKER_IMAGE} .
+                        docker image ls
                         docker ps
                     '''
                 }
@@ -29,7 +52,6 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 script {
-                    // Create and activate a virtual environment, then run unit tests using unittest and coverage
                     sh '''
                         python3 -m venv ${VENV_PATH}
                         . ${VENV_PATH}/bin/activate
@@ -45,7 +67,6 @@ pipeline {
         stage('Robot Tests') {
             steps {
                 script {
-                    // Clone the repository containing Robot Framework tests, create and activate a virtual environment, then run the tests
                     sh '''
                         git clone https://github.com/KolawatInpan/api-robot.git
                         cd api-robot
@@ -70,34 +91,18 @@ pipeline {
         }
 
         stage('Deploy') {
+            agent { label 'vm3'}
             steps {
                 script {
-                    // Add your deployment steps here, e.g., using Docker Compose
-                    sh 'docker compose down'
-                    sh 'docker stop $(docker ps -a -q)'
-                    sh 'docker compose up -d'
-                }
-            }
-        }
-
-        stage('Archive and Transfer Test Results') {
-            steps {
-                script {
-                    // Archive the test results
-                    archiveArtifacts artifacts: 'api-robot/output.xml, api-robot/log.html, api-robot/report.html', allowEmptyArchive: true
-
-                    // Transfer the test results to the target VM
                     sh '''
-                        scp api-robot/output.xml ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
-                        scp api-robot/log.html ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
-                        scp api-robot/report.html ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
+                        docker login ghcr.io -u kolawatinpan -p $GITHUB_TOKEN
+                        docker pull ${DOCKER_IMAGE}:${BUILD_ID}
+                        docker run -d -p 5000:5000 --name ${APP_NAME} ${DOCKER_IMAGE}:${BUILD_ID}
                     '''
                 }
             }
         }
     }
-
-
 
     post {
         always {
