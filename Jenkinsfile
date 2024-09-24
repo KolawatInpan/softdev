@@ -74,6 +74,7 @@ pipeline {
                 script {
                     // Add your deployment steps here, e.g., using Docker Compose
                     sh 'docker compose down'
+                    
                     sh 'docker compose up -d'
                 }
             }
