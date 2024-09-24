@@ -79,17 +79,6 @@ pipeline {
         //     }
         // }
 
-        stage('Stop Flask Application') {
-            steps {
-                script {
-                    // Stop the Flask application
-                    sh '''
-                        pkill -f "flask run"
-                    '''
-                }
-            }
-        }
-
         stage('Push Docker Image') {
             steps {
                 withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
