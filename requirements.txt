@@ -7,4 +7,4 @@ MarkupSafe
 Werkzeug
 Coverage
 robotframework
-robotframework-request
+robotframework-requests
