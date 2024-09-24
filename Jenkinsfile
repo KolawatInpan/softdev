@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "ghcr.io/KolawatInpan/softdev"
+        DOCKER_IMAGE = "ghcr.io/kolawatinpan/softdev"
     }
 
     stages {
@@ -15,7 +15,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
                 }
             }
         }
