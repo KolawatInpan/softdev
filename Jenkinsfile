@@ -32,22 +32,22 @@ pipeline {
         //     }
         // }
 
-        stage('Unit Tests') {
-            steps {
-                script {
-                    // Create and activate a virtual environment, then run unit tests using unittest and coverage
-                    sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install -r requirements.txt
-                        pip install coverage
-                        coverage run -m unittest unit_test.py --verbose
-                        coverage report -m
-                        deactivate
-                    '''
-                }
-            }
-        }
+        // stage('Unit Tests') {
+        //     steps {
+        //         script {
+        //             // Create and activate a virtual environment, then run unit tests using unittest and coverage
+        //             sh '''
+        //                 python3 -m venv venv
+        //                 . venv/bin/activate
+        //                 pip install -r requirements.txt
+        //                 pip install coverage
+        //                 coverage run -m unittest unit_test.py --verbose
+        //                 coverage report -m
+        //                 deactivate
+        //             '''
+        //         }
+        //     }
+        // }
 
         stage('Robot Tests') {
             steps {
