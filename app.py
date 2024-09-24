@@ -22,12 +22,5 @@ def plus(num1, num2):
     except ValueError:
         return jsonify({'error_msg': 'inputs must be numbers'})
 
-<<<<<<< HEAD
-# testtestasdasddsadasd
-=======
-# testtestasdasd
->>>>>>> 27b8ec59bb2ce32aa82462e666d2829c0eb4f9bb
-
-
 if __name__ == "__main__":
     app.run()
