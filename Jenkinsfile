@@ -79,7 +79,6 @@ pipeline {
                 }
             }
         }
-    }
 
         stage('Archive and Transfer Test Results') {
             steps {
@@ -96,6 +95,9 @@ pipeline {
                 }
             }
         }
+    }
+
+
 
     post {
         always {
