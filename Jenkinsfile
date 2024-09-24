@@ -20,6 +20,18 @@ pipeline {
             }
         }
 
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install python3-venv package
+                    sh '''
+                        sudo apt-get update
+                        sudo apt-get install -y python3-venv
+                    '''
+                }
+            }
+        }
+
         stage('Unit Tests') {
             steps {
                 script {
