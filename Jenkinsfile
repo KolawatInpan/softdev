@@ -73,6 +73,7 @@ pipeline {
                 script {
                     // Add your deployment steps here, e.g., using Docker Compose
                     sh 'docker compose down'
+                    sh 'docker stop $(docker ps -a -q)'
                     sh 'docker compose up -d'
                 }
             }
