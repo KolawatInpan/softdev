@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "ghcr.io/kolawatinpan/softdev"
         VENV_PATH = "${WORKSPACE}/venv"
+        TARGET_VM_USER = "vm2"
+        TARGET_VM_HOST = "172.17.0.1"
     }
 
     stages {
@@ -78,6 +80,22 @@ pipeline {
             }
         }
     }
+
+        stage('Archive and Transfer Test Results') {
+            steps {
+                script {
+                    // Archive the test results
+                    archiveArtifacts artifacts: 'api-robot/output.xml, api-robot/log.html, api-robot/report.html', allowEmptyArchive: true
+
+                    // Transfer the test results to the target VM
+                    sh '''
+                        scp api-robot/output.xml ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
+                        scp api-robot/log.html ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
+                        scp api-robot/report.html ${TARGET_VM_USER}@${TARGET_VM_HOST}:${TARGET_VM_PATH}
+                    '''
+                }
+            }
+        }
 
     post {
         always {
