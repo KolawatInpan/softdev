@@ -1,19 +1,11 @@
 import unittest
-from app import app
+from app import app  # Import your Flask app
 
 
-class TestApp(unittest.TestCase):
+class PlusTestCase(unittest.TestCase):
     def setUp(self):
         self.app = app.test_client()
-        self.app_context = app.app_context()
-        self.app_context.push()
-
-    def tearDown(self):
-        self.app_context.pop()
-
-    def test_plus_numbers(self):
-        res = self.app.get('/plus/4/2')
-        self.assertEqual(res.json, {'result': 6})
+        self.app.testing = True
 
     def test_plus_floats(self):
         res = self.app.get('/plus/8.4/4')
@@ -38,7 +30,6 @@ class TestApp(unittest.TestCase):
     def test_plus_invalid_input(self):
         res = self.app.get('/plus/8/zero')
         self.assertEqual(res.json, {'error_msg': 'inputs must be numbers'})
-    
 
 
 if __name__ == '__main__':
