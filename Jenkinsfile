@@ -18,7 +18,6 @@ pipeline {
                 script {
                     sh '''
                         docker build -t ${DOCKER_IMAGE}:${BUILD_ID} .
-                        docker run -d -p 8081:5000 ${DOCKER_IMAGE}:${BUILD_ID}
                         docker ps
                     '''
                 }
