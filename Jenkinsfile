@@ -20,11 +20,39 @@ pipeline {
             }
         }
 
+        stage('Unit Tests') {
+            steps {
+                script {
+                    // Run unit tests using unittest and coverage
+                    sh '''
+                        pip install -r requirements.txt
+                        python -m unittest unit_test --verbose
+                        coverage run -m unittest unit_test.py --verbose
+                        coverage report -m
+                    '''
+                }
+            }
+        }
+
+        stage('Robot Tests') {
+            steps {
+                script {
+                    // Run Robot Framework tests
+                    sh '''
+                        git clone https://github.com/KolawatInpan/api-robot.git
+                        cd api-robot
+                        pip install robotframework
+                        robot test.robot
+                    '''
+                }
+            }
+        }
+
         stage('Push Docker Image') {
             steps {
-                withCredentials([string(credentialsId: 'github-secret', variable: 'GITHUB_TOKEN')]) {
+                withCredentials([string(credentialsId: 'github-token', variable: 'GITHUB_TOKEN')]) {
                     sh '''
-                        echo $GITHUB_TOKEN | docker login ghcr.io -u KolawatInpan --password-stdin
+                        echo $GITHUB_TOKEN | docker login ghcr.io -u kolawatinpan --password-stdin
                         docker push ${DOCKER_IMAGE}:${BUILD_ID}
                     '''
                 }
