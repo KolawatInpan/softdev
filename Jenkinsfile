@@ -32,29 +32,12 @@ pipeline {
         //     }
         // }
 
-        stage('Start Flask Application') {
-            steps {
-                script {
-                    // Create and activate a virtual environment, then start the Flask application
-                    sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install -r requirements.txt
-                        nohup flask run --host=0.0.0.0 --port=5000 &
-                        sleep 10  # Wait for the Flask application to start
-                    '''
-                }
-            }
-        }
-
         stage('Unit Tests') {
             steps {
                 script {
                     // Create and activate a virtual environment, then run unit tests using unittest and coverage
                     sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install coverage
+                        pip install -r requirements.txt
                         coverage run -m unittest unit_test.py --verbose
                         coverage report -m
                         deactivate
