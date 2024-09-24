@@ -2,20 +2,20 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "ghcr.io/KolawatInpan/softdev"
+        DOCKER_IMAGE = "ghcr.io/kolawatinpan/softdev"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/KolawatInpan/softdev.git'
+                git url: 'https://github.com/KolawatInpan/softdev.git', branch: 'main', credentialsId: 'github-admin'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}")
+                    docker.build("${env.DOCKER_IMAGE}:${env.BUILD_ID}", ".")
                 }
             }
         }
@@ -23,7 +23,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://ghcr.io', 'github_credentials') {
+                    docker.withRegistry('https://ghcr.io', 'github-admin') {
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push('latest')
                     }
