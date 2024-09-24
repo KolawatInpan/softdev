@@ -59,6 +59,7 @@ pipeline {
                         python3 -m venv venv
                         . venv/bin/activate
                         pip install robotframework
+                        pip install robotframework-requests
                         robot test.robot
                         deactivate
                     '''
