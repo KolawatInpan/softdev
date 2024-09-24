@@ -23,7 +23,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://ghcr.io', 'github-admin') {
+                    docker.withRegistry('https://ghcr.io', 'github-secret') {
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push()
                         docker.image("${env.DOCKER_IMAGE}:${env.BUILD_ID}").push('latest')
                     }
