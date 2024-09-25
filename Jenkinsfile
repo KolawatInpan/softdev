@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'vm2'}
+    agent { label 'vm1'}
 
     environment {
         APP_NAME = "app"
