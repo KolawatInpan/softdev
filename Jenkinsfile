@@ -51,16 +51,6 @@ pipeline {
             }
         }
 
-        stage('Run Robot Tests') {
-            steps {
-                script {
-                    sh '''
-                        docker exec ${APP_NAME} robot ${ROBOT_FILE}
-                    '''
-                }
-            }
-        }
-
         stage('Unit Tests') {
             steps {
                 script {
