@@ -2,4 +2,4 @@ services:
   app:
     image: ghcr.io/kolawatinpan/softdev:latest
     ports:
-      - "8081:5000"
+      - "80:5000"
