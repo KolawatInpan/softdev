@@ -43,8 +43,19 @@ pipeline {
                 script {
                     sh '''
                         docker build -t ${DOCKER_IMAGE} .
+                        docker run -d --name ${APP_NAME} ${DOCKER_IMAGE}
                         docker image ls
                         docker ps
+                    '''
+                }
+            }
+        }
+
+        stage('Run Robot Tests') {
+            steps {
+                script {
+                    sh '''
+                        docker exec ${APP_NAME} robot ${ROBOT_FILE}
                     '''
                 }
             }
