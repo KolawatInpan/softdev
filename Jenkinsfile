@@ -1,5 +1,6 @@
 pipeline {
-    agent { label 'vm1'}
+    // agent { label 'vm1'}
+    agent any
 
     environment {
         APP_NAME = "app"
@@ -91,7 +92,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            agent { label 'vm3'}
+            // agent { label 'vm3'}
             steps {
                 script {
                     sh '''
