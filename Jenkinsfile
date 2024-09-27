@@ -93,7 +93,7 @@ pipeline {
         }
 
         stage('Deploy') {
-            // agent { label 'vm3'}
+            agent { label 'vm3'}
             steps {
                 script {
                     sh '''
